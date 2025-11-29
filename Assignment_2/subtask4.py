@@ -1,11 +1,32 @@
-# subtask4.py
-# Subtask 4: Full System Simulation (Startup → Execution → Shutdown)
 
-from subtask1 import init_logging
-from subtask3 import run_processes
+import multiprocessing
+import logging
+import time
+
+logging.basicConfig(
+    filename='process_log.txt',
+    filemode='w',
+    level=logging. INFO,
+    format='%(asctime)s - %(processName)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+def system_process(task_name):
+    logging.info(f"{task_name} started")
+    time.sleep(2)
+    logging.info(f"{task_name} ended")
 
 if __name__ == "__main__":
-    print("System Starting...")
-    init_logging()
-    run_processes()
+    print("System Starting ... ")
+
+    p1 = multiprocessing. Process(target=system_process, args=("Process-1",))
+    p2 = multiprocessing. Process(target=system_process, args=("Process-2",))
+
+    p1.start()
+    p2.start()
+
+    p1. join()
+    p2.join()
+
     print("System Shutdown.")
+    logging. info("All processes completed. System shutting down.")
